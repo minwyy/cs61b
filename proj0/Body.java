@@ -7,6 +7,7 @@ public class Body {
 	public double yyVel;
 	public double mass;
 	public String imgFileName;
+	public static double consG = 6.67e-11;
 	/** first constructor to create an object with given arguments */
 	public Body(double xP, double yP, double xV, 
 					double yV, double m, String img) {
@@ -52,9 +53,42 @@ public class Body {
     	double sq = number * number;
     	return sq;
     }
+	/** create a method to calculate exerted force on the specific body */
+	public double calcForceExertedBy(Body other) {
+		double force = consG * mass * other.mass / square((calcDistance(other)));
+		return force;
+	}
+	/** a method to get force exerted in the X directions */
+	public double calcForceExertedByX(Body other) {
+		double forceX = calcForceExertedBy(other) * (other.xxPos - xxPos) / calcDistance(other);
+		return forceX;
+	}
+	/** a method to get force exerted in the Y directions */
+	public double calcForceExertedByY(Body other) {
+	double forceY = calcForceExertedBy(other) * (other.yyPos - yyPos) / calcDistance(other);
+	return forceY;
+	}
+	/** a method to calculate net force exerted in the X direction by an ararry of bodies */
+	public double calcNetForceExertedByX(Body[] bodies) {
+		double netForceX = 0;
+		for (Body s: bodies) {
+			if (!equals(s)) {
+				netForceX += calcForceExertedByX(s);
+			}
+		}
+		return netForceX;
+	}
 
-
-
+	/** a method to calculate net force exerted in the Y direction by an ararry of bodies */
+	public double calcNetForceExertedByY(Body[] bodies) {
+		double netForceY = 0;
+		for (Body s: bodies) {
+			if (!equals(s)) {
+				netForceY += calcForceExertedByY(s);
+			}
+		}
+		return netForceY;
+	}
 
 
 }
