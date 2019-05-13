@@ -89,6 +89,14 @@ public class Body {
 		}
 		return netForceY;
 	}
-
+	/** a method to update position of a body based on the exerted force on it */
+	public void update(double t, double xF, double yF) {
+		double aX = xF / mass;
+		double aY = yF / mass;
+		xxVel += aX * t;
+		yyVel += aY * t;
+		xxPos += xxVel * t;
+		yyPos += yyVel * t;
+	}
 
 }
