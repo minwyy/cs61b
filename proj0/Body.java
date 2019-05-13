@@ -26,5 +26,35 @@ public class Body {
 		mass = b.mass;
 		imgFileName = b.imgFileName;
 	}
+	/** create object helper to get distance between bodies */
+	public double calcDistance(Body other) {
+		double xx = square(xxPos - other.xxPos);
+		double yy = square(yyPos - other.yyPos);
+		double dt = sqRoot(xx + yy);
+		return dt;
+	}
+	
+	/** create a square root helper for calculating distance */
+	public static double sqRoot(double number) {
+		double temp;
+
+		double sr = number / 2;
+
+		do {
+			temp = sr;
+			sr = (temp + (number / temp)) / 2;
+		} while ((temp - sr) != 0);
+
+		return sr;
+    }
+    /** create a square helper */
+    public static double square(double number) {
+    	double sq = number * number;
+    	return sq;
+    }
+
+
+
+
 
 }
