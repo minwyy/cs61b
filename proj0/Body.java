@@ -98,5 +98,20 @@ public class Body {
 		xxPos += xxVel * t;
 		yyPos += yyVel * t;
 	}
+	public void draw() {
+		/** offscreen body to the onscreen canvas, where it is displayed
+		  * in the standard drawing window. */
+		// StdDraw.enableDoubleBuffering();
+
+		/* Clears the drawing window. */
+		// StdDraw.clear();
+
+		/* Stamps the copy of starfield.jpg with upscaled size. */
+		StdDraw.picture(xxPos, yyPos, "./images/" + imgFileName);
+
+		// /* Shows the drawing to the screen, and waits 2000 milliseconds. */
+		// StdDraw.show();
+		// StdDraw.pause(2000);
+	}
 
 }
