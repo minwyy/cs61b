@@ -33,14 +33,7 @@ public class NBody {
 		String filename = args[2];
 		double radius = readRadius(filename);
 		Body[] bodies = readBodies(filename); 
-		/** Stick a copy of the image with specified universe radius. */
-		/** Enables double buffering.
-		  * A animation technique where all drawing takes place on the offscreen canvas.
-		  * Only when you call show() does your drawing get copied from the
-		  * offscreen canvas to the onscreen canvas, where it is displayed
-		  * in the standard drawing window. */
-		// StdDraw.enableDoubleBuffering();
-
+	
 		/** Sets up the universe so it goes from
 		  * -radius to radius */
 		double size = radius;
@@ -55,8 +48,50 @@ public class NBody {
 		for (Body s: bodies) {
 			s.draw();
 		}		
-		/* Shows the drawing to the screen, and waits 2000 milliseconds. */
-		// StdDraw.show();
-		// StdDraw.pause(2000);
+		/** Stick a copy of the image with specified universe radius. */
+		/** Enables double buffering.
+		  * A animation technique where all drawing takes place on the offscreen canvas.
+		  * Only when you call show() does your drawing get copied from the
+		  * offscreen canvas to the onscreen canvas, where it is displayed
+		  * in the standard drawing window. */
+		StdDraw.enableDoubleBuffering();		
+		/** create animation of bodies movement. 
+		  * create current time 0. */
+		double curT = 0;
+		while (curT < t) {
+			/** update the positions of each body through loop. 
+			  * calculate the exerted forces on each individual body before updating positions. */
+			double[] xForces = new double[bodies.length];
+			double[] yForces = new double[bodies.length];
+			for (int i = 0; i < bodies.length; i++) {
+				xForces[i] = bodies[i].calcNetForceExertedByX(bodies);
+				yForces[i] = bodies[i].calcNetForceExertedByY(bodies);
+			}
+			/** update positions using exerted forces stored in the arrays. */
+			for (int i = 0; i < bodies.length; i++) {
+				bodies[i].update(dt, xForces[i], yForces[i]);
+			}
+			/** clear canava. */
+			StdDraw.clear();
+			/* Stamps the copy of starfield.jpg with upscaled size. */
+			StdDraw.picture(0, 0, imageToDraw, size*2, size*2);		
+			
+			/* Draw planets in this universe. */
+			for (Body s: bodies) {
+				s.draw();
+			}	
+
+			/* Shows the drawing to the screen, and waits 2000 milliseconds. */
+			StdDraw.show();
+			StdDraw.pause(10);
+			curT += dt;
+		}
+		StdOut.printf("%d\n", bodies.length);
+		StdOut.printf("%.2e\n", radius);
+		for (int i = 0; i < bodies.length; i++) {
+		    StdOut.printf("%11.4e %11.4e %11.4e %11.4e %11.4e %12s\n",
+		                  bodies[i].xxPos, bodies[i].yyPos, bodies[i].xxVel,
+		                  bodies[i].yyVel, bodies[i].mass, bodies[i].imgFileName);   
+		}		
 	}
 }
