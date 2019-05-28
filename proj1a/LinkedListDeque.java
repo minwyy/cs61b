@@ -24,12 +24,24 @@ public class LinkedListDeque<T> {
 //        }
 //    }
 
-    /** Create an empty linked list deque. */
+    /** create an empty linked list deque. */
     public LinkedListDeque() {
         size = 0;
         sentinel = new IntNode();
         sentinel.prev = sentinel;
         sentinel.next = sentinel;
+    }
+
+    /** create an deep copy of other. */
+    public LinkedListDeque(LinkedListDeque other) {
+        size = 0;
+        sentinel = new IntNode();
+        sentinel.prev = sentinel;
+        sentinel.next = sentinel;
+
+        for (int i = 0; i < other.size(); i += 1) {
+            addLast((T) other.get(i));
+        }
     }
 
 
