@@ -77,6 +77,8 @@ public class LinkedListDeque<T> {
     /** check whether the deque is empty. */
     public boolean isEmpty() {
         if (sentinel.prev == sentinel) {
+            return true;
+        } else {
             return false;
         }
     }
@@ -135,4 +137,19 @@ public class LinkedListDeque<T> {
         return p.next.item;
     }
 
+    /** gets the item at the given index with a recursive method. */
+    /** helper function to obtain the item at the given index in recursive way. */
+    private T getItem(IntNode sentinel, IntNode p, int index) {
+        if (p.next == sentinel) {
+            return null;
+        }
+        if (index == 0) {
+            return p.next.item;
+        } else {
+            return getItem(sentinel, p.next, index - 1);
+        }
+    }
+    public T getRecursive(int index) {
+        return getItem(sentinel, sentinel, index);
+    }
 }
