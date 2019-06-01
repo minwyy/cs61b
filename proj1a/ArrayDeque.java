@@ -2,24 +2,45 @@
 public class ArrayDeque<T> {
     private T[] items;
     private int size;
+    private int nextFirst;
+    private int nextLast;
 
     /** Create an empty list. */
     public ArraryDeque() {
         items = (T []) new Object[100];
         size = 0;
+        nextFirst = 0;
+        nextLast = 1;
+    }
+
+    /** Create an deep copy of other. */
+    public ArraryDeque(ArrayDeque other) {
+        size = 0;
+        nextFirst = other.nextFirst;
+        nextLast = other.nextLast;
+        items = (T []) new Object[100];
+        for (int i = nextFirst + 1; i < other.size(); i += 1) {
+            addLast((T) other.get(i));
+        }
     }
 
     /** Adds an item of type T to the back of the deque. */
     public void addLast(T item) {
-        items[size] = item;
+        items[nextLast] = item;
         size += 1;
+        nextLast += 1;
+        if (nextLast > 99) {
+            nextLast -= 100;
+        }
     }
     /** Adds an item of type T to the front of the deque. */
     public void addFirst(T item) {
-        for (int i = size; i > 0; i--) {
-            items[i] = items[i-1];
+        item[nextFirst] = item;
+        size += 1;
+        nextFirst -= 1;
+        if (nextFirst < 0) {
+            nextFirst += 100;
         }
-        items[0] = item;
     }
 
     /** Returns true if deque is empty, false otherwise. */
@@ -38,8 +59,12 @@ public class ArrayDeque<T> {
     /** Prints the items in the deque from first to last, separated by a space.
       * Prints out a new line when all items printed. */
     public void printDeque() {
-        for (int i = 0; i < size; i++) {
-            System.out.print(items[i] + " ");
+        for (int i = nextFirst + 1; i < size; i++) {
+            if (i < 100) {
+                System.out.print(items[i] + " ");
+            } else {
+                System.out.print(items[i-100] + " ");
+            }
         }
         System.out.println("");
     }
@@ -49,9 +74,14 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         } else {
-            T last = items[size-1];
-            items[size-1] = null;
+            int lastIndex = nextLast - 1;
+            if (lastIndex < 0) {
+                lastIndex += 100;
+            }
+            T last = items[lastIndex];
+            items[lastIndex] = null;
             size -= 1;
+            nextLast = lastIndex;
             return last;
         }
     }
@@ -61,7 +91,7 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         } else {
-            T first = items[0];
+            T first = items[nextFirst+1];
             for (int i = 0; i < size - 1; i++) {
                 items[i] = items[i+1];
             }
@@ -78,4 +108,8 @@ public class ArrayDeque<T> {
             return null;
         }
     }
+
+
+
+
 }
