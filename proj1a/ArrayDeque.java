@@ -6,15 +6,33 @@ public class ArrayDeque<T> {
     private int nextLast;
 
     /** Create an empty list. */
-    public ArraryDeque() {
+    public ArrayDeque() {
         items = (T []) new Object[100];
         size = 0;
         nextFirst = 0;
         nextLast = 1;
     }
 
+    /** (Helper) obtain the index after the given index. */
+    private int plusOne (int index) {
+       int nextIndex = index + 1;
+       if (nextIndex > 99) {
+           nextIndex -= 100;
+       }
+       return nextIndex;
+    }
+
+    /** (Helper) obtain the index before the given index. */
+    private int minusOne (int index) {
+        int beforeIndex = index - 1;
+        if (beforeIndex < 0) {
+            beforeIndex += 100;
+        }
+        return beforeIndex;
+    }
+
     /** Create an deep copy of other. */
-    public ArraryDeque(ArrayDeque other) {
+    public ArrayDeque(ArrayDeque other) {
         size = 0;
         nextFirst = other.nextFirst;
         nextLast = other.nextLast;
@@ -28,19 +46,13 @@ public class ArrayDeque<T> {
     public void addLast(T item) {
         items[nextLast] = item;
         size += 1;
-        nextLast += 1;
-        if (nextLast > 99) {
-            nextLast -= 100;
-        }
+        nextLast = plusOne(nextLast);
     }
     /** Adds an item of type T to the front of the deque. */
     public void addFirst(T item) {
-        item[nextFirst] = item;
+        items[nextFirst] = item;
         size += 1;
-        nextFirst -= 1;
-        if (nextFirst < 0) {
-            nextFirst += 100;
-        }
+        nextFirst = minusOne(nextFirst);
     }
 
     /** Returns true if deque is empty, false otherwise. */
@@ -59,12 +71,10 @@ public class ArrayDeque<T> {
     /** Prints the items in the deque from first to last, separated by a space.
       * Prints out a new line when all items printed. */
     public void printDeque() {
-        for (int i = nextFirst + 1; i < size; i++) {
-            if (i < 100) {
-                System.out.print(items[i] + " ");
-            } else {
-                System.out.print(items[i-100] + " ");
-            }
+        int printIndex = plusOne(nextFirst);
+        for (int i = 0; i < size; i++) {
+            System.out.print(items[printIndex] + " ");
+            printIndex = plusOne(printIndex);
         }
         System.out.println("");
     }
@@ -74,10 +84,7 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         } else {
-            int lastIndex = nextLast - 1;
-            if (lastIndex < 0) {
-                lastIndex += 100;
-            }
+            int lastIndex = minusOne(nextLast);
             T last = items[lastIndex];
             items[lastIndex] = null;
             size -= 1;
@@ -91,11 +98,11 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         } else {
-            T first = items[nextFirst+1];
-            for (int i = 0; i < size - 1; i++) {
-                items[i] = items[i+1];
-            }
-            items[size-1] = null;
+            int firstIndex = plusOne(nextFirst);
+            T first = items[firstIndex];
+            items[firstIndex] = null;
+            size -= 1;
+            nextFirst = firstIndex;
             return first;
         }
     }
@@ -103,13 +110,13 @@ public class ArrayDeque<T> {
     /** Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth. */
     public T get(int index) {
         if (index < size) {
-            return items[index];
+            int AIndex = nextFirst + 1 + index;
+            if (AIndex > 99) {
+                AIndex -= 100;
+            }
+            return items[AIndex];
         } else {
             return null;
         }
     }
-
-
-
-
 }
