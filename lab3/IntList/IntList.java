@@ -106,6 +106,21 @@ public class IntList {
     }
 
 
+    /** reverse the IntList destructively. */
+    public static IntList reverse(IntList A) {
+        if (A == null) {
+            return null;
+        }
+        if (A.rest == null) {
+            return A;
+        } else {
+            IntList endOfReversed = A.rest;
+            IntList rev = IntList.reverse(A.rest);
+            endOfReversed.rest = A;
+            A.rest = null;
+            return rev;
+        }
+    }
 
 
 
