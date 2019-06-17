@@ -1,7 +1,7 @@
 /** Create a "Double Ended Queue" using both lists and arrays,
  * Based on Double Linked List.
  */
-public class LinkedListDeque<T> {
+public class LinkedListDeque<T> implements Deque<T>{
     /** Variables of Deque class.
      *  This list working as a middleman
      *  as IntNode is the naked list storing data.
@@ -46,6 +46,7 @@ public class LinkedListDeque<T> {
 
 
     /** Add an item of type T to the front of the deque. */
+    @Override
     public void addFirst(T item) {
         size += 1;
         IntNode old = sentinel.next;
@@ -60,6 +61,7 @@ public class LinkedListDeque<T> {
         }
     }
     /**  Add an item of type T to the end of the deque. */
+    @Override
     public void addLast(T item) {
         size += 1;
         IntNode old = sentinel.prev;
@@ -74,21 +76,23 @@ public class LinkedListDeque<T> {
         }
     }
 
-    /** Check whether the deque is empty. */
-    public boolean isEmpty() {
-        if (sentinel.prev == sentinel) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    /** Check whether the deque is empty. */
+//    public boolean isEmpty() {
+//        if (sentinel.prev == sentinel) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 
     /** Get the size of the deque. */
+    @Override
     public int size() {
         return size;
     }
 
     /** Prints the items in the deque from first to last separated by a space, end with a new line. */
+    @Override
     public void printDeque() {
         IntNode p = sentinel;
         while (p.next != sentinel) {
@@ -99,6 +103,7 @@ public class LinkedListDeque<T> {
     }
 
     /** Removes and returns the item at the front of the deque. If no such item then return null */
+    @Override
     public T removeFirst() {
         if (sentinel.next == sentinel) {
             return null;
@@ -112,6 +117,7 @@ public class LinkedListDeque<T> {
     }
 
     /** Removes and returns the item at the back of the deque. If no such item then return null */
+    @Override
     public T removeLast() {
         if (sentinel.prev == sentinel) {
             return null;
@@ -125,6 +131,7 @@ public class LinkedListDeque<T> {
     }
 
     /** Gets the item at the given index where 0 is the front and so on. If no such item then return null. */
+    @Override
     public T get(int index) {
         IntNode p = sentinel;
         while (index != 0) {
