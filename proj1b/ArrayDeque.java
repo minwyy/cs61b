@@ -43,14 +43,12 @@ public class ArrayDeque<T> implements Deque<T>{
     }
 
     /** Adds an item of type T to the back of the deque. */
-    @Override
     public void addLast(T item) {
         items[nextLast] = item;
         size += 1;
         nextLast = plusOne(nextLast);
     }
     /** Adds an item of type T to the front of the deque. */
-    @Override
     public void addFirst(T item) {
         items[nextFirst] = item;
         size += 1;
@@ -66,14 +64,12 @@ public class ArrayDeque<T> implements Deque<T>{
 //        }
 //    }
     /** Returns the number of items in the deque. */
-    @Override
     public int size() {
         return size;
     }
 
     /** Prints the items in the deque from first to last, separated by a space.
       * Prints out a new line when all items printed. */
-    @Override
     public void printDeque() {
         int printIndex = plusOne(nextFirst);
         for (int i = 0; i < size; i++) {
@@ -84,7 +80,6 @@ public class ArrayDeque<T> implements Deque<T>{
     }
 
     /** Removes and returns the last item at the back of the deque. If no such item exists, return null. */
-    @Override
     public T removeLast() {
         if (size == 0) {
             return null;
@@ -99,7 +94,6 @@ public class ArrayDeque<T> implements Deque<T>{
     }
 
     /** Removes and returns the first item at the back of the deque. If no such item exists, return null. */
-    @Override
     public T removeFirst() {
         if (size == 0) {
             return null;
@@ -114,7 +108,6 @@ public class ArrayDeque<T> implements Deque<T>{
     }
 
     /** Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth. */
-    @Override
     public T get(int index) {
         if (index < size) {
             int AIndex = nextFirst + 1 + index;

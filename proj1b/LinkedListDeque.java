@@ -46,7 +46,6 @@ public class LinkedListDeque<T> implements Deque<T>{
 
 
     /** Add an item of type T to the front of the deque. */
-    @Override
     public void addFirst(T item) {
         size += 1;
         IntNode old = sentinel.next;
@@ -61,7 +60,6 @@ public class LinkedListDeque<T> implements Deque<T>{
         }
     }
     /**  Add an item of type T to the end of the deque. */
-    @Override
     public void addLast(T item) {
         size += 1;
         IntNode old = sentinel.prev;
@@ -86,13 +84,11 @@ public class LinkedListDeque<T> implements Deque<T>{
 //    }
 
     /** Get the size of the deque. */
-    @Override
     public int size() {
         return size;
     }
 
     /** Prints the items in the deque from first to last separated by a space, end with a new line. */
-    @Override
     public void printDeque() {
         IntNode p = sentinel;
         while (p.next != sentinel) {
@@ -103,7 +99,6 @@ public class LinkedListDeque<T> implements Deque<T>{
     }
 
     /** Removes and returns the item at the front of the deque. If no such item then return null */
-    @Override
     public T removeFirst() {
         if (sentinel.next == sentinel) {
             return null;
@@ -117,7 +112,6 @@ public class LinkedListDeque<T> implements Deque<T>{
     }
 
     /** Removes and returns the item at the back of the deque. If no such item then return null */
-    @Override
     public T removeLast() {
         if (sentinel.prev == sentinel) {
             return null;
@@ -131,7 +125,6 @@ public class LinkedListDeque<T> implements Deque<T>{
     }
 
     /** Gets the item at the given index where 0 is the front and so on. If no such item then return null. */
-    @Override
     public T get(int index) {
         IntNode p = sentinel;
         while (index != 0) {
