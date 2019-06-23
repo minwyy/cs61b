@@ -30,21 +30,21 @@ public class Palindrome {
     }
 
     /** (helper) return true if the Deque word is palindrome off by 1. */
-    private boolean isPalindromeHelper(Deque dequeWord, OffByOne ob1) {
+    private boolean isPalindromeHelper(Deque dequeWord, CharacterComparator cc) {
         if (dequeWord.size() <= 1) {
             return true;
         }
-        if (ob1.equalChars((char) dequeWord.removeFirst(), (char) dequeWord.removeLast())) {
-            return isPalindromeHelper(dequeWord, ob1);
+        if (cc.equalChars((char) dequeWord.removeFirst(), (char) dequeWord.removeLast())) {
+            return isPalindromeHelper(dequeWord, cc);
         } else {
             return false;
         }
     }
 
     /** Return true if a given word is a palindrome off by 1. */
-    public boolean isPalindrome(String word, OffByOne ob1) {
+    public boolean isPalindrome(String word, CharacterComparator cc) {
         Deque test = wordToDeque(word);
-        return isPalindromeHelper(test, ob1);
+        return isPalindromeHelper(test, cc);
     }
 
 }
