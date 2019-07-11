@@ -35,9 +35,9 @@ public class Plip extends Creature {
      */
     public Plip(double e) {
         super("plip");
-        r = 0;
+        r = 99;
         g = 0;
-        b = 0;
+        b = 76;
         energy = e;
     }
 
@@ -57,8 +57,6 @@ public class Plip extends Creature {
      * that you get this exactly correct.
      */
     public Color color() {
-        r = 99;
-        b = 76;
         g = (int)(63 + 96 * energy);
         return color(r, g, b);
     }
@@ -99,7 +97,10 @@ public class Plip extends Creature {
      * Plip.
      */
     public Plip replicate() {
-        return this;
+        double tempEnergy = energy;
+        energy = energy * 0.5;
+        double babyEnergy = tempEnergy * 0.5;
+        return new Plip(babyEnergy);
     }
 
     /**
@@ -119,12 +120,16 @@ public class Plip extends Creature {
         // Rule 1
         Deque<Direction> emptyNeighbors = new ArrayDeque<>();
         boolean anyClorus = false;
-        // TODO
+        for (Direction key: neighbors.keySet()) {
+            if (neighbors.get(key).name().equals("empty")) {
+                emptyNeighbors.add(key);
+            }
+        }
         // (Google: Enhanced for-loop over keys of NEIGHBORS?)
         // for () {...}
 
-        if (false) { // FIXME
-            // TODO
+        if (emptyNeighbors == null) {
+            return new Action(Action.ActionType.STAY);
         }
 
         // Rule 2
