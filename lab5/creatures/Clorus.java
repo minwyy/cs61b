@@ -100,15 +100,12 @@ public class Clorus extends Creature {
                 plipNeighbors.addFirst(entry.getKey());
             }
         }
-        // (Google: Enhanced for-loop over keys of NEIGHBORS?)
-        // for () {...}
 
         if (emptyNeighbors.isEmpty()) {
             return new Action(Action.ActionType.STAY);
         }
 
         // Rule 2
-        // HINT: randomEntry(emptyNeighbors)
         if (!plipNeighbors.isEmpty()) {
             return new Action(Action.ActionType.ATTACK, randomEntry(plipNeighbors));
         }
