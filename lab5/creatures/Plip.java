@@ -141,7 +141,7 @@ public class Plip extends Creature {
         }
         // Rule 3
         for (Map.Entry<Direction, Occupant> entry: neighbors.entrySet()) {
-            if (entry.getValue().name().equals("Cloruses") && Math.random() < 0.5) {
+            if (entry.getValue().name().equals("cloruses") && Math.random() < 0.5) {
                 return new Action(Action.ActionType.MOVE, randomEntry(emptyNeighbors));
             }
         }
