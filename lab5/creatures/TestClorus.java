@@ -74,7 +74,7 @@ public class TestClorus {
         actual = c.chooseAction(bottomEmpty);
         expected = new Action(Action.ActionType.REPLICATE, Direction.BOTTOM);
 
-        assertNotEquals(expected, actual);
+        assertEquals(expected, actual);
 
         // Moves to a random empty square otherwise.
         c = new Clorus(0.2);
@@ -82,7 +82,7 @@ public class TestClorus {
         actual = c.chooseAction(bottomEmpty);
         expected = new Action(Action.ActionType.MOVE, Direction.BOTTOM);
 
-        assertNotEquals(expected, actual);
+        assertEquals(expected, actual);
 
         // Clorus never STAY at one place...
         c = new Clorus(1.2);

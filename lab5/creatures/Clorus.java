@@ -88,17 +88,36 @@ public class Clorus extends Creature {
      * Returns the action selected.
      */
     public Action chooseAction(Map<Direction, Occupant> neighbors) {
-        if (neighbors.get(Direction.TOP).name().equals("empty") && Math.random() < moveProbability) {
-            return new Action(Action.ActionType.MOVE, Direction.TOP);
-        } else if (neighbors.get(Direction.BOTTOM).name().equals("empty") && Math.random() < moveProbability) {
-            return new Action(Action.ActionType.MOVE, Direction.BOTTOM);
-        } else if (neighbors.get(Direction.LEFT).name().equals("empty") && Math.random() < moveProbability) {
-            return new Action(Action.ActionType.MOVE, Direction.LEFT);
-        } else if (neighbors.get(Direction.RIGHT).name().equals("empty") && Math.random() < moveProbability) {
-            return new Action(Action.ActionType.MOVE, Direction.RIGHT);
-        } else {
+        // Rule 1
+        Deque<Direction> emptyNeighbors = new ArrayDeque<>();
+        Deque<Direction> plipNeighbors = new ArrayDeque<>();
+
+        for (Map.Entry<Direction, Occupant> entry: neighbors.entrySet()) {
+            if (entry.getValue().name().equals("empty")) {
+                emptyNeighbors.addFirst(entry.getKey());
+            }
+            if (entry.getValue().name().equals("plip")) {
+                plipNeighbors.addFirst(entry.getKey());
+            }
+        }
+        // (Google: Enhanced for-loop over keys of NEIGHBORS?)
+        // for () {...}
+
+        if (emptyNeighbors.isEmpty()) {
             return new Action(Action.ActionType.STAY);
         }
+
+        // Rule 2
+        // HINT: randomEntry(emptyNeighbors)
+        if (!plipNeighbors.isEmpty()) {
+            return new Action(Action.ActionType.ATTACK, randomEntry(plipNeighbors));
+        }
+        // Rule 3
+        if (energy >= 1) {
+            return new Action(Action.ActionType.REPLICATE, randomEntry(emptyNeighbors));
+        }
+        // Rule 4
+        return new Action(Action.ActionType.MOVE, randomEntry(emptyNeighbors));
     }
 
     /**

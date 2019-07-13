@@ -126,6 +126,9 @@ public class Plip extends Creature {
             if (entry.getValue().name().equals("empty")) {
                 emptyNeighbors.addFirst(entry.getKey());
             }
+            if (entry.getValue().name().equals("clorus")) {
+                anyClorus = true;
+            }
         }
         // (Google: Enhanced for-loop over keys of NEIGHBORS?)
         // for () {...}
@@ -140,10 +143,8 @@ public class Plip extends Creature {
             return new Action(Action.ActionType.REPLICATE, randomEntry(emptyNeighbors));
         }
         // Rule 3
-        for (Map.Entry<Direction, Occupant> entry: neighbors.entrySet()) {
-            if (entry.getValue().name().equals("cloruses") && Math.random() < 0.5) {
-                return new Action(Action.ActionType.MOVE, randomEntry(emptyNeighbors));
-            }
+        if (anyClorus && Math.random() < 0.5) {
+            return new Action(Action.ActionType.MOVE, randomEntry(emptyNeighbors));
         }
         // Rule 4
         return new Action(Action.ActionType.STAY);
