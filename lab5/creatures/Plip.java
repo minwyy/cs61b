@@ -10,6 +10,8 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Map;
 
+import static huglife.HugLifeUtils.randomEntry;
+
 /**
  * An implementation of a motile pacifist photosynthesizer.
  *
@@ -120,23 +122,25 @@ public class Plip extends Creature {
         // Rule 1
         Deque<Direction> emptyNeighbors = new ArrayDeque<>();
         boolean anyClorus = false;
-        for (Direction key: neighbors.keySet()) {
-            if (neighbors.get(key).name().equals("empty")) {
-                emptyNeighbors.add(key);
+        for (Map.Entry<Direction, Occupant> entry: neighbors.entrySet()) {
+            if (entry.getValue().name().equals("empty")) {
+                emptyNeighbors.addFirst(entry.getKey());
             }
         }
         // (Google: Enhanced for-loop over keys of NEIGHBORS?)
         // for () {...}
 
-        if (emptyNeighbors == null) {
+        if (emptyNeighbors.isEmpty()) {
             return new Action(Action.ActionType.STAY);
         }
 
         // Rule 2
         // HINT: randomEntry(emptyNeighbors)
-
+        if (energy >= 1) {
+            return new Action(Action.ActionType.REPLICATE, randomEntry(emptyNeighbors));
+        }
         // Rule 3
-
+        
         // Rule 4
         return new Action(Action.ActionType.STAY);
     }

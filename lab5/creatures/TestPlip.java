@@ -39,7 +39,7 @@ public class TestPlip {
         assertNotEquals(p, babyP);
     }
 
-    //@Test
+    @Test
     public void testChoose() {
 
         // No empty adjacent spaces; stay.
