@@ -1,16 +1,18 @@
 public class UnionFind {
 
-    // TODO - Add instance variables?
+    private int[] id;
 
     /* Creates a UnionFind data structure holding n vertices. Initially, all
        vertices are in disjoint sets. */
     public UnionFind(int n) {
-        // TODO
+        id = new int[n];
     }
 
     /* Throws an exception if v1 is not a valid index. */
     private void validate(int vertex) {
-        // TODO
+        if (!int[vertex]) {
+            throw new
+        }
     }
 
     /* Returns the size of the set v1 belongs to. */
