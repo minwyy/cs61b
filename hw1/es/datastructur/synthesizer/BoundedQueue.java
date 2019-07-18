@@ -30,7 +30,7 @@ public interface BoundedQueue<T> {
         if (fillCount() == capacity()) {
             return true;
         } else {
-            return false
+            return false;
         }
     }
 }
