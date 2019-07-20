@@ -118,8 +118,21 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
     }
 
     @Override
-    public equals(Object o) {
-        
+    public boolean equals(Object o) {
+        if (!(o instanceof ArrayRingBuffer)) {
+            return false;
+        }
+        if (fillCount != ((ArrayRingBuffer) o).fillCount || capacity1 != ((ArrayRingBuffer) o).capacity1) {
+            return false;
+        }
+        Iterator<T> i1 = iterator();
+        Iterator<T> i2 = ((ArrayRingBuffer) o).iterator();
+        while (i1.hasNext()) {
+            if (i1.next() != i2.next()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     // TODO: When you get to part 4, implement the needed code to support
