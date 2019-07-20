@@ -19,5 +19,13 @@ public class TestArrayRingBuffer {
         assertEquals(10, arb.dequeue());
         assertFalse(arb.isFull());
         assertEquals(20, arb.peek());
+        arb.dequeue();
+        arb.enqueue(55);
+        arb.enqueue(56);
+        assertEquals(30, arb.peek());
+        arb.dequeue();
+        arb.dequeue();
+        arb.dequeue();
+        assertEquals(56, arb.peek());
     }
 }
