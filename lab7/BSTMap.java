@@ -90,4 +90,15 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     public Iterator<K> iterator() {
         throw new UnsupportedOperationException("not supported");
     }
+
+    public void printInOrder() {
+        printInOrder(root);
+    }
+
+    /** Helper of printInOrder. */
+    public void printInOrder (Node x) {
+        if (x.left != null) printInOrder(x.left);
+        StdOut.println(x.val);
+        if (x.right != null) printInOrder(x.right);
+    }
 }
