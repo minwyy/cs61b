@@ -2,7 +2,6 @@ import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
 
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,11 +12,10 @@ import java.util.Random;
 public class Experiments {
     public static void experiment1() {
         BST bst = new BST();
-        Random r = new Random();
         List<Double> yValues = new ArrayList<>();
         List<Integer> xValues = new ArrayList<>();
         for (int x = 0; x < 5000; x += 1) {
-            bst.add(r.nextInt(20000));
+            bst.add(RandomGenerator.getRandomInt(5000));
             double thisY = bst.averageDepth();
             xValues.add(x);
             yValues.add(thisY);
