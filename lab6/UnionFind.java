@@ -55,16 +55,13 @@ public class UnionFind {
         int r1 = find(v1);
         int r2 = find(v2);
         if (r1 <= r2) {
-            if (id[r1] == id[r2]) {
-                id[r1] += id[r2];
-                id[r2] = r1;
+                id[v1] += id[v2];
+                id[v2] = r1;
             } else {
-                id[r2] += id[r1];
-                id[r1] = r2;
+                id[v2] += id[v1];
+                id[v1] = r2;
             }
-        } else {
-            id[v2] = v1;
-        }
+        
     }
 
     /* Returns the root of the set V belongs to. Path-compression is employed
