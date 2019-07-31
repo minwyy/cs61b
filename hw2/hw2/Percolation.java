@@ -18,46 +18,48 @@ public class Percolation {
         uf = new WeightedQuickUnionUF(N * N + 2);
         uf2 = new WeightedQuickUnionUF(N * N + 1);
         isOpen = new boolean[N * N];
-        indexOfVirtualTop = N * N + 1;
-        indexOfVirtualBottom = N * N + 2;
+        indexOfVirtualTop = N * N;
+        indexOfVirtualBottom = N * N + 1;
         numberOfOpenpores = 0;
     }
 
     /** Opens the site (row, col). */
     public void open(int row, int col) {
-        if (isValidPos(row, col))
+        if (!isValidPos(row, col))
             throw new IndexOutOfBoundsException("outside of the grid!");
-        isOpen[xyTo1d(row, col)] = true;
-        numberOfOpenpores += 1;
+        if (!isOpen[xyTo1d(row, col)]) {
+            isOpen[xyTo1d(row, col)] = true;
+            numberOfOpenpores += 1;
 
-        /** Checks neighboring four cells around this cell and connecting them if open. */
-        //above
-        if (isValidPos(row-1, col) && isOpen(row-1, col)) {
-            uf.union(xyTo1d(row, col), xyTo1d(row-1, col));
-            uf2.union(xyTo1d(row, col), xyTo1d(row-1, col));
-        }
-        //bottom
-        if (isValidPos(row+1, col) && isOpen(row+1, col)) {
-            uf.union(xyTo1d(row, col), xyTo1d(row + 1, col));
-            uf2.union(xyTo1d(row, col), xyTo1d(row + 1, col));
-        }
-        //left
-        if (isValidPos(row, col-1) && isOpen(row, col-1)) {
-            uf.union(xyTo1d(row, col), xyTo1d(row , col-1));
-            uf2.union(xyTo1d(row, col), xyTo1d(row , col-1));
-        }
-        //right
-        if (isValidPos(row, col+1) && isOpen(row, col+1)) {
-            uf.union(xyTo1d(row, col), xyTo1d(row , col+1));
-            uf2.union(xyTo1d(row, col), xyTo1d(row , col+1));
-        }
+            /** Checks neighboring four cells around this cell and connecting them if open. */
+            //above
+            if (isValidPos(row - 1, col) && isOpen(row - 1, col)) {
+                uf.union(xyTo1d(row, col), xyTo1d(row - 1, col));
+                uf2.union(xyTo1d(row, col), xyTo1d(row - 1, col));
+            }
+            //bottom
+            if (isValidPos(row + 1, col) && isOpen(row + 1, col)) {
+                uf.union(xyTo1d(row, col), xyTo1d(row + 1, col));
+                uf2.union(xyTo1d(row, col), xyTo1d(row + 1, col));
+            }
+            //left
+            if (isValidPos(row, col - 1) && isOpen(row, col - 1)) {
+                uf.union(xyTo1d(row, col), xyTo1d(row, col - 1));
+                uf2.union(xyTo1d(row, col), xyTo1d(row, col - 1));
+            }
+            //right
+            if (isValidPos(row, col + 1) && isOpen(row, col + 1)) {
+                uf.union(xyTo1d(row, col), xyTo1d(row, col + 1));
+                uf2.union(xyTo1d(row, col), xyTo1d(row, col + 1));
+            }
 
-        /** if the cell is at top or at bottom, connect it to the virtual top or virtual bottom. */
-        if (row == 0) {
-            uf.union(xyTo1d(row, col), indexOfVirtualTop);
-            uf2.union(xyTo1d(row, col), indexOfVirtualTop);
-        } else if (row == gridN - 1){
-            uf.union(xyTo1d(row,col), indexOfVirtualBottom);
+            /** if the cell is at top or at bottom, connect it to the virtual top or virtual bottom. */
+            if (row == 0) {
+                uf.union(xyTo1d(row, col), indexOfVirtualTop);
+                uf2.union(xyTo1d(row, col), indexOfVirtualTop);
+            } else if (row == gridN - 1) {
+                uf.union(xyTo1d(row, col), indexOfVirtualBottom);
+            }
         }
     }
 
