@@ -14,10 +14,14 @@ public class ComplexOomage implements Oomage {
         int total = 0;
         for (int x : params) {
             total = total * 256;
+            if (total >= 65536) {
+                total = total / 65536;
+            }
             total = total + x;
         }
         return total;
     }
+
 
     @Override
     public boolean equals(Object o) {
