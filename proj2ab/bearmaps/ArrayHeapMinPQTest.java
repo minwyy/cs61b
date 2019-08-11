@@ -31,7 +31,7 @@ public class ArrayHeapMinPQTest {
         t.add("slim", 1);
         assertEquals("slim", t.removeSmallest());
         assertEquals("fat", t.removeSmallest());
-        assertEquals("fat", t.getSmallest());
+        assertEquals("boy", t.getSmallest());
     }
 
     @Test

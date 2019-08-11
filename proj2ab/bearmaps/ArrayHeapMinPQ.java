@@ -2,20 +2,26 @@ package bearmaps;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     /* create a private class to store item and relevant priority. */
     private class PriorityNode implements Comparable<PriorityNode> {
         T item;
         double priority;
+
         PriorityNode(T item, double priority) {
             this.item = item;
             this.priority = priority;
         }
 
-        T item() {return item;}
+        T item() {
+            return item;
+        }
 
-        double priority() {return priority;}
+        double priority() {
+            return priority;
+        }
 
         void setPriority(double priority) {
             this.priority = priority;
@@ -33,6 +39,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
                 return Double.compare(this.priority(), other.priority());
             }
         }
+    }
         private ArrayList<PriorityNode> al = new ArrayList<>();
         private HashMap<T, Integer> indices = new HashMap<>();
         private int size = 0;
@@ -61,34 +68,77 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
 
         /*sink down the PNode if it is bigger than its children.(and swim up the bigger child. */
         private void sink(int i) {
+            // case no child
             if (leftChild(i) >= size()) {return;}
+            // case leftChild is the last item in the ArrayList
+            if (leftChild(i) == size() - 1) {
+                if (al.get(leftChild(i)).compareTo(al.get(i)) < 0) {
+                    swap(leftChild(i), i);
+                }
+                return;
+            }
             int compareLnR = al.get(leftChild(i)).compareTo(al.get(rightChild(i)));
             if (compareLnR <= 0) {
                 if (al.get(leftChild(i)).compareTo(al.get(i)) < 0) {
                     swap(leftChild(i), i);
                     sink(leftChild(i));
-                } else {
+                }
+            } else {
                     if (al.get(rightChild(i)).compareTo(al.get(i)) < 0) {
                         swap(rightChild(i), i);
                         sink(rightChild(i));
                     }
                 }
-            }
         }
 
     /* Adds an item with the given priority value. Throws an
-     * IllegalArgumentExceptionb if item is already present.
+     * IllegalArgumentException if item is already present.
      * You may assume that item is never null. */
-    void add(T item, double priority);
+    @Override
+    public void add(T item, double priority) {
+        if (indices.containsKey(item)) throw new IllegalArgumentException("item already present");
+        int k = al.size();
+        al.add(new PriorityNode(item, priority));
+        indices.put(item, k);
+        swim(k);
+        size++;
+    }
+    @Override
     /* Returns true if the PQ contains the given item. */
-    boolean contains(T item);
+    public boolean contains(T item) {
+        return indices.containsKey(item);
+    }
     /* Returns the minimum item. Throws NoSuchElementException if the PQ is empty. */
-    T getSmallest();
+    @Override
+    public T getSmallest() {
+        if (size() == 0) throw new NoSuchElementException("no item exists");
+        return al.get(0).item();
+    }
     /* Removes and returns the minimum item. Throws NoSuchElementException if the PQ is empty. */
-    T removeSmallest();
+    @Override
+    public T removeSmallest() {
+        T rnd = getSmallest();
+        swap(0,this.size() - 1);
+        indices.remove(rnd);
+        al.remove(this.size() - 1);
+        size -= 1;
+        sink(0);
+        return rnd;
+    }
     /* Returns the number of items in the PQ. */
-    int size(){return size;}
+    @Override
+    public int size(){return size;}
     /* Changes the priority of the given item. Throws NoSuchElementException if the item
      * doesn't exist. */
-    void changePriority(T item, double priority);
+    @Override
+    public void changePriority(T item, double priority) {
+        if (!indices.containsKey(item)) throw new NoSuchElementException("no such item exists");
+        int cIndex = indices.get(item);
+        al.get(cIndex).setPriority(priority);
+        if (al.get(cIndex).compareTo(al.get(parent(cIndex))) < 0) {
+            swim(cIndex);
+        } else {
+            sink(cIndex);
+        }
+    }
 }
