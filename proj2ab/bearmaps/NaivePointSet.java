@@ -5,7 +5,7 @@ import java.util.List;
 public class NaivePointSet implements PointSet {
     List<Point> points;
     // constructor using List<Point> points as input
-    public NaivePointSet(List<Point>points) {
+    public NaivePointSet(List<Point> points) {
         this.points = points;
     }
 
@@ -24,11 +24,4 @@ public class NaivePointSet implements PointSet {
         }
         return nearestPt;
     }
-
-
-
-
-
-
-
 }
