@@ -42,9 +42,16 @@ public class MergeSort {
      */
     private static <Item extends Comparable> Queue<Queue<Item>>
             makeSingleItemQueues(Queue<Item> items) {
-        // Your code here!
-        return null;
+        if (items == null) {throw new IllegalArgumentException("invalid input");}
+        Queue<Queue<Item>> single = new Queue<>();
+        for (Item x : items) {
+            Queue<Item> s = new Queue<>();
+            s.enqueue(x);
+            single.enqueue(s);
+        }
+        return single;
     }
+
 
     /**
      * Returns a new queue that contains the items in q1 and q2 in sorted order.
@@ -61,8 +68,24 @@ public class MergeSort {
      */
     private static <Item extends Comparable> Queue<Item> mergeSortedQueues(
             Queue<Item> q1, Queue<Item> q2) {
-        // Your code here!
-        return null;
+        Queue<Item> merged = new Queue<>();
+        // merge smallest number from q1, q2 in order using iteration while q1 q2 not empty
+        while (!q1.isEmpty() || !q2.isEmpty()) {
+            merged.enqueue(getMin(q1, q2));
+        }
+        //add the rest of mother queue into the merged queue and return
+//        if (q1 == null) {
+//            for (Item x : q2) {
+//                merged.enqueue(x);
+//            }
+//            return merged;
+//        } else {
+//            for (Item y : q1) {
+//                merged.enqueue(y);
+//            }
+//            return merged;
+//        }
+        return merged;
     }
 
     /**
@@ -77,7 +100,11 @@ public class MergeSort {
      */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
-        // Your code here!
-        return items;
+        if (items == null) {throw new IllegalArgumentException("invalid input");}
+        Queue<Queue<Item>>  singleQueues = makeSingleItemQueues(items);
+        while (singleQueues.size() > 1) {
+            singleQueues.enqueue(mergeSortedQueues(singleQueues.dequeue(), singleQueues.dequeue()));
+        }
+        return singleQueues.dequeue();
     }
 }
