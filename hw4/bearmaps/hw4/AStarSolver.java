@@ -20,14 +20,9 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
     private ExtrinsicMinPQ<Vertex> fringe; //used to get next vertex for relaxation
     private final double INFINITY = Double.MAX_VALUE;
 
-    private AStarGraph<Vertex> graph; //for helper function relax
-    Vertex endV; //for helper function relax
 
     //constructor which finds the solution, computing everything necessary for all other methods
     public AStarSolver(AStarGraph<Vertex> input, Vertex start, Vertex end, double timeout) {
-        graph = input;
-        Vertex endV = end;
-
         solutionWeight = 0;
         solution = new LinkedList<>();
         num = 0;
@@ -38,7 +33,7 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
         //initialize ADTs
         edgeTo.put(start, null);
         distTo.put(start, 0.);
-        fringe.add(start, graph.estimatedDistanceToGoal(start, end));
+        fringe.add(start, input.estimatedDistanceToGoal(start, end));
 
         while (fringe.size() != 0) {
             Vertex current = fringe.removeSmallest();
@@ -52,13 +47,11 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
                 outcome = SolverOutcome.SOLVED;
                 solutionWeight = distTo(end);
                 timeSpent = sw.elapsedTime();
-                endV = end;
                 solution = fromEdgeToList(edgeTo, end);
                 return;
             } else {
-                List<WeightedEdge<Vertex>> neighbor = input.neighbors(current);
-                for (WeightedEdge e : neighbor) {
-                    relax(e);
+                for (WeightedEdge<Vertex> e : input.neighbors(current)) {
+                    relax(e, input, end);
                 }
             }
         }
@@ -70,19 +63,21 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
     private double distTo(Vertex v) {return distTo.getOrDefault(v, INFINITY);}
 
     /* relax the edges. */
-    private void relax(WeightedEdge<Vertex> e) {
+    private void relax(WeightedEdge<Vertex> e, AStarGraph<Vertex> graph, Vertex endV) {
         Vertex p = e.from();
         Vertex q = e.to();
         double w = e.weight();
         if ((distTo(p) + w) < distTo(q)) {
             distTo.put(q, distTo(p) + w);
             edgeTo.put(q, p);
+            //only add vertex back to PQ when distTo updated to avoid looping
+            if (fringe.contains(q)) {
+                fringe.changePriority(q, distTo(q) + graph.estimatedDistanceToGoal(q, endV));
+            } else {
+                fringe.add(q,distTo(q) + graph.estimatedDistanceToGoal(q, endV));
+            }
         }
-        if (fringe.contains(q)) {
-            fringe.changePriority(q, distTo(q) + graph.estimatedDistanceToGoal(q, endV));
-        } else {
-            fringe.add(q,distTo(q) + graph.estimatedDistanceToGoal(q, endV));
-        }
+
     }
 
     //find list of solution from edgeTo
