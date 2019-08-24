@@ -17,8 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static bearmaps.proj2c.utils.Constants.SEMANTIC_STREET_GRAPH;
-import static bearmaps.proj2c.utils.Constants.ROUTE_LIST;
+import static bearmaps.proj2c.utils.Constants.*;
 
 /**
  * Handles requests from the web browser for map images. These images
@@ -84,13 +83,46 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
      */
     @Override
     public Map<String, Object> processRequest(Map<String, Double> requestParams, Response response) {
-        //System.out.println("yo, wanna know the parameters given by the web browser? They are:");
-        //System.out.println(requestParams);
+        double requestUllon = requestParams.get("ullon");
+        double requestUllat = requestParams.get("ullat");
+        double requestLrlon = requestParams.get("lrlon");
+        double requestLrlat = requestParams.get("lrlat");
+        if (!isSuccessful(requestUllon, requestUllat, requestLrlon, requestLrlat)) {
+            return queryFail();
+        }
         Map<String, Object> results = new HashMap<>();
         System.out.println("Since you haven't implemented RasterAPIHandler.processRequest, nothing is displayed in "
                 + "your browser.");
         return results;
     }
+
+    private double LonDPP(double ullon, double lrlon, double w) {
+        return (ullon - lrlon) / w;
+    }
+
+    private int depth(double LonDPP) {
+        int dep = 0;
+        while (dep < 7 && resolution(dep) > LonDPP) {
+            dep += 1;
+        }
+        return dep;
+    }
+
+    private double resolution(int depth) {
+        double basic = (ROOT_LRLON - ROOT_ULLON) / TILE_SIZE;
+        return basic / Math.pow(2, depth);
+    }
+
+    private boolean isSuccessful(double ullon, double ullat,double lrlon, double lrlat) {
+        if (ullon >= ROOT_LRLON || ullat <= ROOT_LRLAT || lrlon <= ROOT_ULLON || lrlat >= ROOT_ULLAT) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+
 
     @Override
     protected Object buildJsonResponse(Map<String, Object> result) {
