@@ -14,6 +14,9 @@ public class Engine {
      * including inputs from the main menu.
      */
     public void interactWithKeyboard() {
+        String inputN = inputGUI();
+        TETile[][] world = interactWithInputString(inputN);
+        
     }
 
     /**
