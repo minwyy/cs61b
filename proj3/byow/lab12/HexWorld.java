@@ -13,7 +13,7 @@ import java.util.Random;
  */
 public class HexWorld {
     private static final int SIDE = 4;
-    private static final long SEED = 1024;
+    private static final long SEED = 1024399;
     private static final Random RANDOM = new Random(SEED);
     //add single hexagon
     public static void addHexagon (TETile[][] world, Position p, int s, TETile t) {
@@ -63,30 +63,83 @@ public class HexWorld {
             default: return Tileset.WATER;
         }
     }
+    //copy position p to another position cP
+    private static Position copyPosition(Position p) {
+        Position cp = new Position(0,0);
+        cp.x = p.x;
+        cp.y = p.y;
+        return cp;
+    }
+
+    //move to the position to the left of bottom hexagon
+    private static Position moveLeft(Position p, int s) {
+        Position nP = new Position(0,0);
+        nP.x = p.x - 2 * s + 1;
+        nP.y = p.y + s;
+        return nP;
+    }
+    //move to the position to the right of bottom hexagon
+    private static Position moveRight(Position p, int s) {
+        Position nP = new Position(0,0);
+        nP.x = p.x + 2 * s - 1;
+        nP.y = p.y + s;
+        return nP;
+    }
+    //move to the position to the upside of bottom hexagon
+    private static Position moveUp(Position p, int s) {
+        Position nP = new Position(0,0);
+        nP.x = p.x;
+        nP.y = p.y + 2 * s;
+        return nP;
+    }
+
+
+    //draw an column of hexagon
+    private static void drawColumnHexagon(TETile[][] world, Position p, int s, int n) {
+        for (int i = 0; i < n; i++) {
+            addHexagon(world, p, SIDE, randomTETile());
+            p = moveUp(p, s);
+        }
+    }
+
+
 
     public static void main(String[] args) {
         //initiate render for a new screen
         TERenderer ter = new TERenderer();
-        ter.initialize(10,10);
-        Position p = new Position(3, 0);
+        ter.initialize(60,60);
+        Position p = new Position(28, 0);
         TETile t =randomTETile();
 
         //initiate tiles
-        TETile[][] world = new TETile[15][15];
-        for (int x = 0; x < 15; x++) {
-            for (int y = 0; y < 15; y++) {
+        TETile[][] world = new TETile[60][60];
+        for (int x = 0; x < 60; x++) {
+            for (int y = 0; y < 60; y++) {
                 world[x][y] = Tileset.NOTHING;
             }
         }
+        int heightH = 5;
+        //draw middle column
+        Position cp = copyPosition(p);
+        drawColumnHexagon(world, cp, SIDE, heightH);
+        //draw columns on the left
+        cp = copyPosition(p);
+        while (heightH >= 3) {
+            cp = moveLeft(cp, SIDE);
+            heightH -= 1;
+            drawColumnHexagon(world, cp, SIDE, heightH);
+        }
 
-        addHexagon(world, p, SIDE, t);
+        //draw columns on the right
+        heightH = 5;
+        cp = copyPosition(p);
+        while (heightH >= 3) {
+            cp = moveRight(cp, SIDE);
+            heightH -= 1;
+            drawColumnHexagon(world, cp, SIDE, heightH);
+        }
 
         //apply the tiles on the screen
         ter.renderFrame(world);
-
-
-
     }
-
-
 }
